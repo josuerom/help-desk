@@ -3,12 +3,12 @@ PyScripts para soporte técnico productivo
 
 ## Eliminar usuarios del todo
 ```powershell
-net user USER /delete
+net user <USER> /delete
 ```
 
 Eliminar la carpeta del perfil de usuario:
 ```powershell
-rmdir /s /q c:\users\USER
+rmdir /s /q c:\users\<USER>
 ```
 
 Eliminar las entradas del registro relacionadas con el perfil de usuario:
@@ -16,7 +16,7 @@ Eliminar las entradas del registro relacionadas con el perfil de usuario:
 $ProfileListPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
 Get-ChildItem $ProfileListPath | ForEach-Object {
     $ProfileImagePath = $_.GetValue("ProfileImagePath")
-    if ($ProfileImagePath -like "*\shifu_1") {
+    if ($ProfileImagePath -like "*\<USER>") {
         Remove-Item $_.PSPath -Recurse -Force
         Write-Host "Eliminado del registro: $($_.PSPath)"
     }
@@ -25,10 +25,10 @@ Get-ChildItem $ProfileListPath | ForEach-Object {
 
 Asegúrate de ejecutar todos estos comandos y scripts con privilegios de administrador para que se puedan realizar todas las acciones necesarias.
 
-Comandos para crear entorno virtual:
+Comandos para crear entorno virtual del proyecto:
 ```cmd
-python -m venv env
-env\Scripts\activate
+python -m venv help-desk
+help-desk\Scripts\activate
 pip install colorama
 deactivate
 ```
