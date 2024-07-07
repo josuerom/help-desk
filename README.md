@@ -1,11 +1,7 @@
 # Help Desk
-PyScripts para soporte técnico productivo
+PyScripts productivos para la ayuda inmediata de escritorio
 
-## Eliminar usuarios del todo
-```powershell
-net user <USER> /delete
-```
-
+## PowerShell:
 Eliminar la carpeta del perfil de usuario:
 ```powershell
 rmdir /s /q c:\users\<USER>
@@ -25,10 +21,11 @@ Get-ChildItem $ProfileListPath | ForEach-Object {
 
 Asegúrate de ejecutar todos estos comandos y scripts con privilegios de administrador para que se puedan realizar todas las acciones necesarias.
 
+## Entorno virtual
 Comandos para crear entorno virtual del proyecto:
-```cmd
+```powershell
 python -m venv help-desk
 help-desk\Scripts\activate
-pip install colorama
+pip install --upgrade pip
 deactivate
 ```
