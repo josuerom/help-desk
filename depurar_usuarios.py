@@ -5,6 +5,7 @@ Autor: @josuerom Fecha: 16/Julio/2024
 import os
 import time
 import socket
+import locale
 import datetime
 import subprocess
 import ctypes
@@ -19,6 +20,11 @@ blanco = 0x07
 
 def color_print(color):
    ctypes.windll.kernel32.SetConsoleTextAttribute(ctypes.windll.kernel32.GetStdHandle(-11), color)
+
+
+def establecer_marca():
+   ctypes.windll.kernel32.SetConsoleIcon(ctypes.windll.kernel32.LoadLibraryW(r".\icono.ico"))
+   ctypes.windll.kernel32.SetConsoleTitleW("DEPURADOR USER | ATENTO 2024 | JR3")
 
 
 def eliminar_usuarios():
@@ -59,6 +65,7 @@ def eliminar_usuarios():
 
 
 def firma_autor():
+   locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
    fecha = datetime.datetime.now().strftime("%d/%B/%Y")
    color_print(blanco)
    print("**************************************")
@@ -76,6 +83,7 @@ def cerrar_sesion():
 
 
 if __name__ == "__main__":
+   establecer_marca()
    eliminar_usuarios()
    firma_autor()
    cerrar_sesion()

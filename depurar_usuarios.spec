@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='01_DepurarUsuarios_2024',
+    name='depurar_usuarios',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
