@@ -24,7 +24,7 @@ def color_print(color):
 def eliminar_usuarios():
    def obtener_usuarios():
       directorio_de_usuarios = r"C:\Users"
-      carpetas_excluidas = ["admin", "prestamo" "soporte", "public", "all users", "default", "default user"]
+      carpetas_excluidas = ["admin", "prestamo", "josue.romero" "soporte", "public", "all users", "default", "default user"]
       usuarios = [carpeta for carpeta in os.listdir(directorio_de_usuarios) if os.path.isdir(os.path.join(directorio_de_usuarios, carpeta)) and carpeta.lower() not in [ex.lower() for ex in carpetas_excluidas]]
       return usuarios
 
@@ -33,7 +33,7 @@ def eliminar_usuarios():
    host = socket.gethostname()
 
    color_print(amarrillo)
-   print(f"A CONTINUACION SE INTENTARAN ELIMINAR ({len(lista_usuarios)}) RESIDUOS DE USUARIOS DEL HOST '{host}'.\n")
+   print(f"A CONTINUACION SE INTENTARAN ELIMINAR ({len(lista_usuarios)}) RESIDUOS DE USUARIOS DEL {host}.\n")
 
    for usuario in lista_usuarios:
       try:
@@ -55,7 +55,7 @@ def eliminar_usuarios():
          print(f"Usuario {contador}: [{usuario}]\t\t--> NO ELIMINADO.")
 
    color_print(verde)
-   print(f"\nSE ALCANZARON A ELIMINAR ({del_exitoso}) COMPLETAMENTE.\n")
+   print(f"\nSE ALCANZARON A ELIMINAR ({del_exitoso}) USUARIOS COMPLETAMENTE.\n")
 
 
 def firma_autor():
@@ -71,7 +71,7 @@ def firma_autor():
 def cerrar_sesion():
    color_print(azul)
    print("Se cerrara la sesion en pocos segundos...")
-   time.sleep(3)
+   time.sleep(7)
    os.system("shutdown /l /f")
 
 
