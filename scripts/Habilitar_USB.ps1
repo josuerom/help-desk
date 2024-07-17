@@ -8,14 +8,11 @@ If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 $registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\RemovableStorageDevices"
 # Verificar si la clave del registro existe
 if (-not (Test-Path $registryPath)) {
-   # Write-Output "Creando la clave del registro: $registryPath"
-   # New-Item -Path $registryPath -Force | Out-Null
+   Write-Output "No existe la clave del registro: $registryPath"
+} else{
+   # Establecer el valor del registro para permitir todos los dispositivos USB
+   Set-ItemProperty -Path $registryPath -Name "Deny_All" -Value 0 -Type DWord -Force
+   Write-Output "Ahora ingrese la USB.`nSi no funciona ejecute nuevamente!"
 }
-# Establecer el valor del registro para permitir todos los dispositivos USB
-Set-ItemProperty -Path $registryPath -Name "Deny_All" -Value 0 -Type DWord -Force
-Write-Output "Ahora ingrese la USB."
-Write-Output "Si no funciona ejecute nuevamente!"
-
-# Reiniciar para aplicar los cambios (opcional dependiendo de las políticas del dominio)
-#Restart-Computer -Force
+Write-Output "`nAutor: @josuerom"
 Pause

@@ -3,9 +3,8 @@ Write-Output "LICENCIA ALOJADA DEL PRODUCTO: [ $key ]`n"
 if ($key -ne "") {
    Write-Output "Eliminando la clave de producto actual...`n"
    cscript //B //NoLogo "%windir%\System32\slmgr.vbs" /upk
-   Write-Output "Clave de producto eliminada.`n"
 } else {
-   Write-Output "No se encontró una clave de producto para eliminar.`n"
+   Write-Output "No se encontro una clave de producto para eliminar.`n"
 }
 do {
    $newKey = Read-Host "Ingrese la nueva clave de producto >>"
@@ -14,7 +13,6 @@ do {
    }
 } while ($newKey -eq "")
 cscript //B //NoLogo "%windir%\System32\slmgr.vbs" /ipk $newKey
-Write-Output "`nClave de producto insertada.`n"
 Write-Output "Activando la nueva clave de producto...`n"
 cscript //B //NoLogo "%windir%\System32\slmgr.vbs" /ato
 Write-Output "----------------------------------"

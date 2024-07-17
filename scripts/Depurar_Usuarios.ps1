@@ -34,7 +34,7 @@ function EliminarRegistrosPerfil {
 }
 EliminarCarpetasUsuarios
 EliminarRegistrosPerfil
-Write-Output "DEPURACION DE USUARIOS COMPLETA.`n"
-Write-Output "Autor: @josuerom"
+Write-Output "DEPURACION DE USUARIOS COMPLETA."
+Write-Output "`nAutor: @josuerom"
 Start-Sleep -Seconds 4
 Restart-Computer -Force

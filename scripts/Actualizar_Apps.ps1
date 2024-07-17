@@ -1,4 +1,3 @@
-# Verificar si el script se está ejecutando con privilegios de administrador
 If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
    Write-Warning "¡ANIMAL! Debes ejecutar este script como administrador."
@@ -30,6 +29,6 @@ foreach ($update in $updates) {
       Write-Error "Error al actualizar $($update.Id): $_"
    }
 }
-Write-Output "Algunas aplicaciones se han actualizado."
+Write-Output "Algunas aplicaciones se intentaron actualizar.`n"
 Write-Output "Autor: @josuerom"
 Pause

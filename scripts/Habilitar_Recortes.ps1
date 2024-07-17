@@ -9,10 +9,10 @@ $registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\TabletPC"
 # Verificar si la clave del registro existe
 if (-not (Test-Path $registryPath)) {
    Write-Output "No existe clave del registro: $registryPath"
-   break
+} else {
+   # Establecer el valor del registro para permitir la aplicación Recortes
+   Set-ItemProperty -Path $registryPath -Name "DisableSnippingTool" -Value 0 -Type DWord -Force
+   Write-Output "La aplicacion Recortes (SnippingTool) ha sido habilitada."
 }
-# Establecer el valor del registro para permitir la aplicación Recortes
-Set-ItemProperty -Path $registryPath -Name "DisableSnippingTool" -Value 0 -Type DWord -Force
-Write-Output "La aplicacion Recortes (SnippingTool) ha sido habilitada."
-Write-Output "Autor: @josuerom"
+Write-Output "`nAutor: @josuerom"
 Pause

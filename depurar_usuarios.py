@@ -1,10 +1,10 @@
 """
-PyScript para la depuración instantánea de residuos de usuarios en Windows
-Autor: @josuerom Fecha: 03/Julio/2024
+PyScript para la depuración de usuarios automatica en Windows
+Autor: @josuerom Fecha: 16/Julio/2024
 """
 import os
 import time
-import shutil
+import datetime
 import subprocess
 import ctypes
 
@@ -15,68 +15,65 @@ rojo = 0x0C
 verde = 0x0A
 blanco = 0x07
 
-def set_color(color):
+
+def color_print(color):
    ctypes.windll.kernel32.SetConsoleTextAttribute(ctypes.windll.kernel32.GetStdHandle(-11), color)
 
 
-def obtener_usuarios():
-   directorio_de_usuarios = r"C:\Users"
-   carpetas_excluidas = ["soporte", "public", "all users", "default", "default user"]
-   usuarios = [carpeta for carpeta in os.listdir(directorio_de_usuarios) if os.path.isdir(os.path.join(directorio_de_usuarios, carpeta)) and carpeta.lower() not in [ex.lower() for ex in carpetas_excluidas]]
-   return usuarios
+def eliminar_usuarios():
+   def obtener_usuarios():
+      directorio_de_usuarios = r"C:\Users"
+      carpetas_excluidas = ["admin", "prestamo" "soporte", "public", "all users", "default", "default user"]
+      usuarios = [carpeta for carpeta in os.listdir(directorio_de_usuarios) if os.path.isdir(os.path.join(directorio_de_usuarios, carpeta)) and carpeta.lower() not in [ex.lower() for ex in carpetas_excluidas]]
+      return usuarios
 
+   lista_usuarios = obtener_usuarios()
+   contador, del_exitoso = 0, 0
 
-def eliminar_usuarios(lista_usuarios):
+   color_print(amarrillo)
+   print(f"A CONTINUACION SE INTENTARAN ELIMINAR ({len(lista_usuarios)}) USUARIOS DEL SISTEMA.\n")
+
    for usuario in lista_usuarios:
       try:
-         subprocess.Popen(['powershell.exe', f'net user {usuario} /delete'], creationflags=subprocess.CREATE_NO_WINDOW).wait()
-         shutil.rmtree(os.path.join(r"C:\Users", usuario), ignore_errors=True)
-         subprocess.Popen(['powershell.exe', f'Remove-Item -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList\\*" -Recurse -Force -ErrorAction SilentlyContinue -Filter "*{usuario}"'], creationflags=subprocess.CREATE_NO_WINDOW).wait()
-         set_color(verde)
-         print(f"Usuario [{usuario}] eliminado.")
+         contador += 1
+         cmd_dirusuario = f"Remove-Item -Path C:\Users\{usuario} -Recurse -Force"
+         estado_uno = subprocess.Popen(['powershell.exe', '-Command', cmd_dirusuario], creationflags=subprocess.CREATE_NO_WINDOW).wait()
+         comando = f'(Get-WmiObject Win32_UserProfile | Where-Object {{ $_.LocalPath -like "*\{usuario}" }}).SID'
+         sid_process = subprocess.Popen(['powershell.exe', '-Command', comando], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
+         stdout, stderr = sid_process.communicate()
+         SID_usuario = stdout.strip().decode('utf-8')
+         cmd_definitivo = f"Remove-Item -Path HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList\\{SID_usuario} -Recurse"
+         estado_dos = subprocess.Popen(['powershell.exe', '-Command', cmd_definitivo], creationflags=subprocess.CREATE_NO_WINDOW).wait()
+         if estado_uno == 0 and estado_dos == 0:
+            del_exitoso += 1
+         color_print(verde)
+         print(f"Usuario {contador}. [{usuario}] -->    ELIMINADO.")
       except Exception as e:
-         set_color(rojo)
-         print(f"Error al intentar eliminar el usuario [{usuario}]:\n{e}")
-         set_color(blanco)
-         return
-   set_color(verde)
-   set_color(blanco)
-   print(f"REGISTROS RESIDUALES DE USUARIO ELIMINADOS.")
+         color_print(rojo)
+         print(f"Usuario {contador}: [{usuario}] --> NO ELIMINADO.")
+
+   color_print(verde)
+   print(f"\nSE ALCANZARON A ELIMINAR COMPLETAMENTE ({del_exitoso}) USUARIOS.\n")
 
 
 def firma_autor():
+   fecha = datetime.datetime.now().strftime("%d/%B/%Y")
+   color_print(blanco)
    print("******************************************")
-   set_color(amarrillo)
-   print("MIJITO SE HAN DEPURADO LOS USUARIOS!\n\nAUTOR: @josuerom")
-   set_color(blanco)
+   color_print(amarrillo)
+   print(f"MIJITO SE HAN DEPURADO LOS USUARIOS!\nFecha de ejecución: {fecha}\n\nAUTOR: @josuerom")
+   color_print(blanco)
    print("******************************************\n")
 
 
-def reiniciar_sistema():
-   set_color(azul)
-   print("El sistema se reiniciará en muy pocos segundos...")
-   set_color(blanco)
-   time.sleep(10)
-   os.system("shutdown /r /f")
-
-
-def es_administrador():
-   try:
-      return ctypes.windll.shell32.IsUserAnAdmin()
-   except:
-      return False
+def cerrar_sesion():
+   color_print(azul)
+   print("Se cerrara la sesion en pocos segundos...")
+   time.sleep(3)
+   os.system("shutdown /l /f")
 
 
 if __name__ == "__main__":
-   if es_administrador():
-      usuarios = obtener_usuarios()
-      eliminar_usuarios(usuarios)
-      firma_autor()
-      reiniciar_sistema()
-   else:
-      set_color(rojo)
-      print("¡ANIMAL! Ejecuta este programa desde el usuario: [ .\\soporte ]")
-      set_color(azul)
-      print("Presione cualquier tecla para salir...")
-      set_color(blanco)
-      input()
+   eliminar_usuarios()
+   firma_autor()
+   cerrar_sesion()

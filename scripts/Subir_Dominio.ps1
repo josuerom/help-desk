@@ -1,6 +1,6 @@
 # Pedir al usuario el nombre de host y el dominio o grupo de trabajo
-$hostName = Read-Host "NOMBRE DE HOST >>"
-$domainOrWorkgroup = Read-Host "DOMINIO | WORKGROUP >>"
+$hostName = Read-Host "NOMBRE DE HOST"
+$domainOrWorkgroup = Read-Host "DOMINIO"
 
 # Validar si se ingresó un nombre de host y un dominio/grupo de trabajo
 if (-not $hostName.Trim()) {
@@ -8,12 +8,12 @@ if (-not $hostName.Trim()) {
    exit
 }
 if (-not $domainOrWorkgroup.Trim()) {
-   Write-Host "Debe ingresar un dominio o grupo de trabajo valido."
+   Write-Host "Debe ingresar un dominio valido."
    exit
 }
 # Pedir al usuario el nombre de usuario y la contraseña para unirse al dominio
-$username = Read-Host "USUARIO >>"
-$password = Read-Host -AsSecureString "CLAVE >>"
+$username = Read-Host "USUARIO"
+$password = Read-Host -AsSecureString "CLAVE"
 
 # Convertir la contraseña segura en texto claro para netdom
 $passwordPlain = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password))
@@ -27,10 +27,7 @@ $netdomArgs = "/Domain:$domainOrWorkgroup /UserD:$username /PasswordD:$passwordP
 netdom join $env:COMPUTERNAME $netdomArgs
 
 # Mostrar mensaje de éxito
-Write-Host "Se ha sido unido correctamente al dominio/grupo de trabajo: $domainOrWorkgroup"
-Write-Host ""
+Write-Host "Se ha sido unido correctamente al dominio: $domainOrWorkgroup`n"
 Write-Host "Se reinicara automaticamente en POCOS segundos"
-
-# Reiniciar el equipo para aplicar los cambios
-Restart-Computer -Force -Delay 30
+Restart-Computer -Force -Delay 10
 Pause
