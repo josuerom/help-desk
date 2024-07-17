@@ -1,4 +1,4 @@
-('D:\\Workspace\\help-desk\\build\\depurar_usuarios\\depurar_usuarios.pkg',
+('D:\\Workspace\\help-desk\\build\\depurar_usuarios\\01_DepurarUsuarios_2024.pkg',
  {'BINARY': True,
   'DATA': True,
   'EXECUTABLE': True,
