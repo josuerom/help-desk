@@ -4,6 +4,7 @@ Autor: @josuerom Fecha: 16/Julio/2024
 """
 import os
 import time
+import socket
 import datetime
 import subprocess
 import ctypes
@@ -29,16 +30,17 @@ def eliminar_usuarios():
 
    lista_usuarios = obtener_usuarios()
    contador, del_exitoso = 0, 0
+   host = socket.gethostname()
 
    color_print(amarrillo)
-   print(f"A CONTINUACION SE INTENTARAN ELIMINAR ({len(lista_usuarios)}) USUARIOS DEL SISTEMA.\n")
+   print(f"A CONTINUACION SE INTENTARAN ELIMINAR ({len(lista_usuarios)}) RESIDUOS DE USUARIOS DEL HOST '{host}'.\n")
 
    for usuario in lista_usuarios:
       try:
          contador += 1
-         cmd_dirusuario = f"Remove-Item -Path C:\Users\{usuario} -Recurse -Force"
+         cmd_dirusuario = fr"Remove-Item -Path C:\Users\{usuario} -Recurse -Force"
          estado_uno = subprocess.Popen(['powershell.exe', '-Command', cmd_dirusuario], creationflags=subprocess.CREATE_NO_WINDOW).wait()
-         comando = f'(Get-WmiObject Win32_UserProfile | Where-Object {{ $_.LocalPath -like "*\{usuario}" }}).SID'
+         comando = fr'(Get-WmiObject Win32_UserProfile | Where-Object {{ $_.LocalPath -like "*\{usuario}" }}).SID'
          sid_process = subprocess.Popen(['powershell.exe', '-Command', comando], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
          stdout, stderr = sid_process.communicate()
          SID_usuario = stdout.strip().decode('utf-8')
@@ -47,23 +49,23 @@ def eliminar_usuarios():
          if estado_uno == 0 and estado_dos == 0:
             del_exitoso += 1
          color_print(verde)
-         print(f"Usuario {contador}. [{usuario}] -->    ELIMINADO.")
+         print(f"Usuario {contador}. [{usuario}]\t\t--> ELIMINADO.")
       except Exception as e:
          color_print(rojo)
-         print(f"Usuario {contador}: [{usuario}] --> NO ELIMINADO.")
+         print(f"Usuario {contador}: [{usuario}]\t\t--> NO ELIMINADO.")
 
    color_print(verde)
-   print(f"\nSE ALCANZARON A ELIMINAR COMPLETAMENTE ({del_exitoso}) USUARIOS.\n")
+   print(f"\nSE ALCANZARON A ELIMINAR ({del_exitoso}) COMPLETAMENTE.\n")
 
 
 def firma_autor():
    fecha = datetime.datetime.now().strftime("%d/%B/%Y")
    color_print(blanco)
-   print("******************************************")
+   print("**************************************")
    color_print(amarrillo)
-   print(f"MIJITO SE HAN DEPURADO LOS USUARIOS!\nFecha de ejecución: {fecha}\n\nAUTOR: @josuerom")
+   print(f"MIJITO SE HAN DEPURADO LOS USUARIOS!\nFecha actual: {fecha}\n\nAUTOR: @josuerom")
    color_print(blanco)
-   print("******************************************\n")
+   print("**************************************\n")
 
 
 def cerrar_sesion():
