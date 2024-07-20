@@ -1,11 +1,11 @@
 @echo off
 setlocal
-title SCP -- Atento Telares -- JR3
+title FSCP :: Atento Telares :: JR3
 color 6
 
 set /p puerto_servidor="PUERTO: "
 set /p usuario_servidor="USUARIO SERVIDOR: "
-set /p ip_servidor="IP-HOST SERVIDOR: "
+set /p ip_servidor="IP SERVIDOR: "
 set /p origen_servidor="ORIGEN SERVIDOR: "
 set /p destino_cliente="DESTINO CLIENTE: "
 
