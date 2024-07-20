@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title (SCP | Atento Telares | JR3)
+title SCP -- Atento Telares -- JR3
 
 color 0A
 set /p ip_servidor="IP SERVIDOR: "
