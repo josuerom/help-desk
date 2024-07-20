@@ -6,13 +6,13 @@ color 2
 set /p ip_servidor="IP SERVIDOR: "
 set /p puerto_ssh="PUERTO SERVIDOR: "
 set /p usuario_servidor="USUARIO SERVIDOR: "
-set /p origen_servidor="ORIGEN SERVIDOR [c:\apps\act.bat]: "
+set /p origen_servidor="ORIGEN SERVIDOR: "
 set /p usuario_destino="USUARIO DESTINO: "
-set destino=C:\Users\%usuario_destino%\Desktop
+set destino="c:\users\%usuario_destino%\desktop"
 
 echo.
-scp -P %puerto_ssh% %origen_servidor% %usuario_servidor%@%ip_servidor%:%destino%
 color 3
+scp -P %puerto_ssh% "%origen_servidor%" %usuario_servidor%@%ip_servidor%:%destino%
 
 echo.
 color 7
