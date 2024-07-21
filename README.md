@@ -4,7 +4,7 @@ PyScripts productivos para la ayuda inmediata de escritorio
 ## PowerShell:
 Eliminar la carpeta del perfil de usuario:
 ```powershell
-rmdir /s /q c:\users\<USER>
+rmdir /S /Q c:\users\<USER>
 ```
 
 Eliminar las entradas del registro relacionadas con el perfil de usuario:
