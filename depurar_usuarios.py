@@ -55,23 +55,22 @@ def consultar_data_usuario() -> list:
    for usuario in lista_usuarios:
       try:
          contador += 1
-         comando = f"Remove-Item C:\\Users\\{usuario} -Recurse -Force"
-         lsr_definitiva.append(comando)
-         print(lsr[-1])
+         comando_uno = f"Remove-Item C:\\Users\\{usuario} -Recurse -Force"
+         lsr_definitiva.append(comando_uno)
 
-         comando = f'(Get-WmiObject Win32_UserProfile | Where-Object {{ $_.LocalPath -like "*\\{usuario}" }}).SID'
-         sid_process = subprocess.Popen(['powershell.exe', '-Command', comando], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
+         comando_dos = f'(Get-WmiObject Win32_UserProfile | Where-Object {{ $_.LocalPath -like "*\\{usuario}" }}).SID'
+         sid_process = subprocess.Popen(['powershell.exe', '-Command', comando_dos], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
 
          stdout, stderr = sid_process.communicate()
 
          usuario_SID = stdout.strip().decode('utf-8')
 
          if usuario_SID:
-            comando = fr"Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\{usuario_SID}' -Recurse -Force"
-            lsr_definitiva.append(comando)
-            print(lsr[-1])
+            comando_tres = fr"Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\{usuario_SID}' -Recurse -Force"
+            lsr_definitiva.append(comando_tres)
 
          print(f"Usuario {contador}:  [{usuario}]  OBTENIDO.")
+         print(comando_uno, comando_dos, comando_tres, "\n", end='\n')
       except Exception as e:
          color_print(rojo)
          print(f"Usuario {contador}:  [{usuario}]  NO OBTENIDO.")
@@ -80,8 +79,8 @@ def consultar_data_usuario() -> list:
 
 
 def contruir_programa_ps1(lsr_definitiva):
-   print("\nSE INTENTA CONSTRUIR 'C:\\Users\\Public\\Downloads\\dpu.ps1'.\n")
-   ruta_archivo_ps1 = r'C:\Users\Public\Downloads\dpu.ps1'
+   print("\nSE INTENTA CONSTRUIR 'c:\\users\\soporte\\dpu.ps1'.\n")
+   ruta_archivo_ps1 = r'c:\users\soporte\dpu.ps1'
    with open(ruta_archivo_ps1, 'w') as contenido_archivo_ps1:
       for consulta in lsr_definitiva:
          contenido_archivo_ps1.write(consulta + "\n")
@@ -100,11 +99,11 @@ def firma_autor():
    print("********************************************\n")
 
 
-def ejecutar_programa(ubicacion_programa):
+def ejecutar_programa(comando_tres):
    color_print(azul)
-   print("\nEJECUTANDO EL PROGRAMA 'C:\\Users\\Public\\Downloads\\dpu.ps1'\n")
+   print("\nEJECUTANDO EL PROGRAMA 'c:\\users\\soporte\\dpu.ps1'\n")
    try:
-      subprocess.run(['powershell.exe', '-Command', ubicacion_programa], capture_output=False, text=True, check=True)
+      subprocess.Popen(['powershell.exe', '-File', comando_tres], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NEW_CONSOLE)
    except subprocess.CalledProcessError as e:
       print(f'ERROR:\n{e.stderr}')
 
