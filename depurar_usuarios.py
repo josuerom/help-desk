@@ -66,7 +66,7 @@ def consultar_data_usuario() -> list:
          usuario_SID = stdout.strip().decode('utf-8')
 
          if usuario_SID:
-            comando_tres = fr"Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\{usuario_SID}' -Recurse -Force"
+            comando_tres = f"Remove-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList\\{usuario_SID}' -Recurse -Force"
             lsr_definitiva.append(comando_tres)
 
          print(f"Usuario {contador}:  [{usuario}]  OBTENIDO.")
@@ -101,9 +101,9 @@ def firma_autor():
 
 def ejecutar_programa(comando_tres):
    color_print(azul)
-   print("\nEJECUTANDO EL PROGRAMA 'c:\\users\\soporte\\dpu.ps1'\n")
+   print("\nEJECUTANDO EL PROGRAMA '%USERPROFILE%\dpu.ps1'\n")
    try:
-      subprocess.Popen(['powershell.exe', '-File', comando_tres], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NEW_CONSOLE)
+      proceso = subprocess.Popen(['powershell.exe', '-File', comando_tres], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
    except subprocess.CalledProcessError as e:
       print(f'ERROR:\n{e.stderr}')
 
